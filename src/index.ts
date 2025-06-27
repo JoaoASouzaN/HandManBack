@@ -10,7 +10,7 @@ import { pagamentoRouter } from './routes/pagamento/PagamentoRouter';
 import { servicoRouter } from './routes/servicoAgendado/ServicoRoutes';
 import avaliacaoRouter from './routes/avaliacao/AvaliacaoRoutes';
 import { SocketConfig } from './config/Socket';
-
+import leilaoRoutes from "./routes/leilao/LeilaoRoutes";
 
 // Rotas
 app.use('/usuarios', usuarioRouter);
@@ -20,6 +20,7 @@ app.use('/mensagem', mensagemRouter);
 app.use('/pagamento',pagamentoRouter);
 app.use('/servicos',servicoRouter);
 app.use('/avaliacao',avaliacaoRouter);
+app.use("/leiloes", leilaoRoutes);
 
 /// Cria servidor HTTP
 const server = http.createServer(app);

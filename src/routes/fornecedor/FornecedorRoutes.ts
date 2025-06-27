@@ -2,7 +2,6 @@ import express from 'express';
 import { FornecedorController } from '../../controllers/fornecedor/FornecedorController';
 import { upload } from '../../config/multerConfig';
 
-
 export const fornecedorRouter = express.Router();
 
 const fornecedorController = new FornecedorController();
