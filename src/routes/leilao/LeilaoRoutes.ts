@@ -1,19 +1,17 @@
-import express from "express";
-import { LeilaoController } from "../../controllers/leilao/LeilaoController";
+import express from 'express';
+import { LeilaoController } from '../../controllers/leilao/LeilaoController';
 
-const LeilaoRouter = express.Router();
-const controller = new LeilaoController();
+const leilaoRouter = express.Router();
+const leilaoController = new LeilaoController();
 
-// Rota para criar novo leilão
-LeilaoRouter.post("/", (req, res) => controller.criar(req, res));
+// Rotas públicas
+leilaoRouter.get('/', leilaoController.listarLeiloes);
+leilaoRouter.get('/ativos', leilaoController.listarLeiloesAtivos);
+leilaoRouter.get('/:id', leilaoController.obterLeilaoPorId);
 
-// Rota para listar todos os leilões
-LeilaoRouter.get("/", (req, res) => controller.buscarTodos(req, res));
+// Rotas protegidas
+leilaoRouter.post('/', leilaoController.criarLeilao);
+leilaoRouter.post('/:id/lance', leilaoController.enviarLance);
+leilaoRouter.get('/usuario/:id_usuario', leilaoController.listarLeiloesPorUsuario);
 
-// Rota para buscar um leilão por ID
-LeilaoRouter.get("/:id", (req, res) => controller.buscarPorId(req, res));
-
-// Rota para lançar um novo lance em um leilão
-LeilaoRouter.post("/:id/lances", (req, res) => controller.lancar(req, res));
-
-export default LeilaoRouter;
+export default leilaoRouter;

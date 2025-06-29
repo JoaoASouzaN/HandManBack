@@ -12,4 +12,5 @@ export interface Leilao {
   detalhes: string;
   prazoLimite: string;
   lances: Lance[];
+  id_usuario: string;
 }

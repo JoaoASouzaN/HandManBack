@@ -1,37 +1,119 @@
 import { Request, Response } from "express";
 import { LeilaoService } from "../../service/leilao/LeilaoService";
-import { Request, Response } from "express-serve-static-core";
-import { ParsedQs } from "qs";
 
-const service = new LeilaoService();
+const leilaoService = new LeilaoService();
 
 export class LeilaoController {
-  buscarTodos(req: Request<{}, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>, number>): void | Promise<void> {
-      throw new Error("Method not implemented.");
-  }
-  async listar(req: Request, res: Response) {
-    const dados = await service.listarLeiloes();
-    res.json(dados);
-  }
+  public criarLeilao = async (req: Request, res: Response): Promise<void> => {
+    const { titulo, descricao, valorDesejado, detalhes, prazoLimite, id_usuario } = req.body;
 
-  async buscarPorId(req: Request, res: Response) {
+    try {
+      const leilao = await leilaoService.criarLeilao({
+        titulo,
+        descricao,
+        valorDesejado,
+        detalhes,
+        prazoLimite,
+        id_usuario,
+      });
+      res.status(201).json(leilao);
+    } catch (error) {
+      res.status(500).json({ erro: "Erro ao criar leilão", detalhes: error });
+    }
+  };
+
+  public listarLeiloes = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const leiloes = await leilaoService.listarLeiloes();
+      res.json(leiloes);
+    } catch (error) {
+      res.status(500).json({ erro: "Erro ao listar leilões", detalhes: error });
+    }
+  };
+
+  public listarLeiloesAtivos = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const leiloes = await leilaoService.listarLeiloes();
+      const agora = new Date();
+      
+      // Filtra leilões com prazo futuro e formata para o frontend
+      const leiloesAtivos = leiloes
+        .filter(leilao => new Date(leilao.prazoLimite) > agora)
+        .map(leilao => ({
+          id: leilao.id,
+          titulo: leilao.titulo,
+          descricao: leilao.descricao,
+          imagemCapa: "", // Campo opcional para imagem
+          tempoFinalizacao: leilao.prazoLimite
+        }));
+      
+      res.json(leiloesAtivos);
+    } catch (error) {
+      res.status(500).json({ erro: "Erro ao listar leilões ativos", detalhes: error });
+    }
+  };
+
+  public obterLeilaoPorId = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
-    const leilao = await service.buscarPorId(id);
-    if (!leilao) return res.status(404).json({ erro: "Leilão não encontrado" });
-    res.json(leilao);
-  }
+    try {
+      const leilao = await leilaoService.buscarPorId(id);
+      if (!leilao) {
+        res.status(404).json({ erro: "Leilão não encontrado" });
+        return;
+      }
+      
+      // Formata o leilão para o formato esperado pelo frontend
+      const leilaoFormatado = {
+        id_leilao: leilao.id,
+        titulo: leilao.titulo,
+        descricao: leilao.descricao,
+        categoria: "Serviços", // Campo padrão, pode ser expandido depois
+        data_final: leilao.prazoLimite,
+        id_usuario: "user1", // Campo padrão, pode ser expandido depois
+        lances: leilao.lances.map(lance => ({
+          id_lance: Math.random().toString(36).substr(2, 9), // ID temporário
+          id_usuario: lance.usuarioId,
+          valor: lance.valor,
+          criado_em: lance.data
+        }))
+      };
+      
+      res.json(leilaoFormatado);
+    } catch (error) {
+      res.status(404).json({ erro: "Leilão não encontrado", detalhes: error });
+    }
+  };
 
-  async criar(req: Request, res: Response) {
-    const { titulo, descricao, valorDesejado, detalhes, prazoLimite } = req.body;
-    const novo = await service.criarLeilao({ titulo, descricao, valorDesejado, detalhes, prazoLimite });
-    res.status(201).json(novo);
-  }
-
-  async lancar(req: Request, res: Response) {
+  public enviarLance = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     const { usuarioId, valor } = req.body;
-    const atualizado = await service.adicionarLance(id, usuarioId, valor);
-    if (!atualizado) return res.status(404).json({ erro: "Leilão não encontrado para lançar" });
-    res.json(atualizado);
-  }
+
+    try {
+      const resultado = await leilaoService.adicionarLance(id, usuarioId, valor);
+      res.json(resultado);
+    } catch (error) {
+      res.status(400).json({ erro: "Erro ao enviar lance", detalhes: error });
+    }
+  };
+
+  public listarLeiloesPorUsuario = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    try {
+      const leiloes = await leilaoService.listarLeiloes();
+      // Filtrar apenas leilões criados pelo usuário
+      const leiloesDoUsuario = leiloes.filter(leilao => leilao.id_usuario === id);
+      // Formatar para o frontend
+      const leiloesFormatados = leiloesDoUsuario.map(leilao => ({
+        id_leilao: leilao.id,
+        titulo: leilao.titulo,
+        valor_atual: leilao.lances.length > 0 ? leilao.lances[leilao.lances.length - 1].valor : leilao.valorDesejado,
+        prazo: leilao.prazoLimite,
+        status: new Date(leilao.prazoLimite) > new Date() ? 'Ativo' : 'Finalizado',
+        total_lances: leilao.lances.length
+      }));
+      res.json(leiloesFormatados);
+    } catch (error) {
+      res.status(500).json({ erro: "Erro ao buscar leilões do usuário", detalhes: error });
+    }
+  };
 }
