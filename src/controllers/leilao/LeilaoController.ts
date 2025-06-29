@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { LeilaoService } from "../../service/leilao/LeilaoService";
+import { getTokenData } from "../../middlewares/Authenticator";
 
 const leilaoService = new LeilaoService();
 
@@ -89,7 +90,42 @@ export class LeilaoController {
     const { usuarioId, valor } = req.body;
 
     try {
-      const resultado = await leilaoService.adicionarLance(id, usuarioId, valor);
+      // Verificar se o token está presente no header
+      const authHeader = req.headers.authorization;
+      if (!authHeader) {
+        res.status(401).json({ erro: "Token de autenticação não fornecido" });
+        return;
+      }
+
+      // Extrair o token do header (formato: "Bearer <token>")
+      const token = authHeader.replace('Bearer ', '');
+      const tokenData = getTokenData(token);
+
+      if (!tokenData) {
+        res.status(401).json({ erro: "Token inválido" });
+        return;
+      }
+
+      // Verificar se o usuário é um fornecedor
+      if (tokenData.role !== 'Fornecedor') {
+        res.status(403).json({ 
+          erro: "Apenas fornecedores podem dar lances em leilões",
+          detalhes: "Você precisa ser um fornecedor para participar de leilões"
+        });
+        return;
+      }
+
+      // Verificar se o usuário está tentando dar lance em seu próprio leilão
+      const leilao = await leilaoService.buscarPorId(id);
+      if (leilao && leilao.id_usuario === tokenData.id) {
+        res.status(400).json({ 
+          erro: "Você não pode dar lance em seu próprio leilão",
+          detalhes: "O criador do leilão não pode participar dos lances"
+        });
+        return;
+      }
+
+      const resultado = await leilaoService.adicionarLance(id, tokenData.id, valor);
       res.json(resultado);
     } catch (error) {
       res.status(400).json({ erro: "Erro ao enviar lance", detalhes: error });
