@@ -26,6 +26,10 @@ export class LeilaoController {
   public listarLeiloes = async (req: Request, res: Response): Promise<void> => {
     try {
       const leiloes = await leilaoService.listarLeiloes();
+      const { id } = req.params;
+
+      console.log("ID recebido:", id);
+      console.log("Leilões disponíveis:", leiloes.map(l => l.id_usuario));
       
       // Formatar os leilões para o formato esperado pelo mobile
       const leiloesFormatados = leiloes.map(leilao => ({
@@ -60,7 +64,7 @@ export class LeilaoController {
       
       // Filtra leilões com prazo futuro e formata para o frontend
       const leiloesAtivos = leiloes
-        .filter(leilao => new Date(leilao.prazoLimite) > agora)
+        .filter(leilao => (leilao.status === 'Ativo' || !leilao.status) && leilao.prazoLimite && new Date(leilao.prazoLimite) > agora)
         .map(leilao => ({
           id: leilao.id,
           titulo: leilao.titulo,
@@ -189,9 +193,9 @@ export class LeilaoController {
     const { id } = req.params;
     try {
       const leiloes = await leilaoService.listarLeiloes();
-      // Filtrar apenas leilões criados pelo usuário
+      console.log("ID recebido:", id);
+      console.log("Leilões disponíveis:", leiloes.map(l => l.id_usuario));
       const leiloesDoUsuario = leiloes.filter(leilao => leilao.id_usuario === id);
-      // Formatar para o frontend
       const leiloesFormatados = leiloesDoUsuario.map(leilao => ({
         id: leilao.id,
         titulo: leilao.titulo,
@@ -215,6 +219,26 @@ export class LeilaoController {
       res.json(leiloesFormatados);
     } catch (error) {
       res.status(500).json({ erro: "Erro ao buscar leilões do usuário", detalhes: error });
+    }
+  };
+
+  public deletarLeilao = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    try {
+      await leilaoService.deletarLeilao(id);
+      res.status(204).send();
+    } catch (error) {
+      res.status(500).json({ erro: "Erro ao deletar leilão", detalhes: error });
+    }
+  };
+
+  public cancelarLeilao = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    try {
+      await leilaoService.atualizarStatus(id, 'Cancelado');
+      res.status(200).json({ mensagem: 'Leilão cancelado com sucesso.' });
+    } catch (error) {
+      res.status(500).json({ erro: "Erro ao cancelar leilão", detalhes: error });
     }
   };
 }

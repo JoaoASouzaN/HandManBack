@@ -6,9 +6,11 @@ import { generateId } from "../../middlewares/generateId";
 import { io } from "../../index";
 import { uploadImagemBuffer } from "../../service/cloudinaryService";
 import { SocketConfig } from "../../config/Socket";
+import { FornecedorRepository } from '../../repositories/fornecedor/FornecedorRepository';
 
 export class ServicoController {
     private servicoService = new ServicoService();
+    private fornecedorRepository = new FornecedorRepository();
     public criarServico = async (req: Request, res: Response) => {
         try {
             const {
@@ -104,9 +106,9 @@ export class ServicoController {
     public buscarServico = async (req: Request, res: Response) => {
         try {
             const { idServico } = req.params;
-
+            console.log('Recebido pedido de detalhes do serviço para id:', idServico);
             const dados = await this.servicoService.buscarServico(idServico);
-
+            console.log('Resultado da busca do serviço:', dados);
             res.status(200).send(dados);
         } catch (error: unknown) {
             if (error instanceof CustomError) {
@@ -154,7 +156,14 @@ export class ServicoController {
                 throw new CustomError("Serviço não encontrado", 404);
             }
 
-            res.status(200).send(dados);
+            // Buscar nome do fornecedor
+            let nomeFornecedor = null;
+            if (dados.id_fornecedor) {
+                const fornecedor = await this.fornecedorRepository.buscarFornecedorPorId(dados.id_fornecedor);
+                nomeFornecedor = fornecedor?.nome || null;
+            }
+
+            res.status(200).send({ ...dados, nomeFornecedor });
         } catch (error: unknown) {
             if (error instanceof CustomError) {
                 res.status(error.statusCode).json({ error: error.message });

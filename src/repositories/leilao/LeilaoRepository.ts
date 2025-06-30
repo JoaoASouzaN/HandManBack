@@ -5,6 +5,8 @@ import { v4 as uuid } from "uuid";
 
 const dbPath = path.join(process.cwd(), "banco/handMan.leiloes.json");
 
+console.log("CAMINHO DO JSON:", dbPath);
+
 export class LeilaoRepository {
   async getAll(): Promise<Leilao[]> {
     const data = await fs.readFile(dbPath, "utf-8");
@@ -34,5 +36,20 @@ export class LeilaoRepository {
 
     await fs.writeFile(dbPath, JSON.stringify(leiloes, null, 2));
     return leiloes[index];
+  }
+
+  async deleteById(id: string): Promise<void> {
+    const leiloes = await this.getAll();
+    const novosLeiloes = leiloes.filter(l => l.id !== id);
+    await fs.writeFile(dbPath, JSON.stringify(novosLeiloes, null, 2));
+  }
+
+  async updateStatus(id: string, status: string): Promise<void> {
+    const leiloes = await this.getAll();
+    const index = leiloes.findIndex(l => l.id === id);
+    if (index !== -1) {
+      leiloes[index].status = status;
+      await fs.writeFile(dbPath, JSON.stringify(leiloes, null, 2));
+    }
   }
 }

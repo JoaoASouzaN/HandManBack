@@ -51,7 +51,7 @@ export class SocketConfig {
                     "http://192.168.18.27:3003",
                     "http://192.168.18.27:3000",
                     "http://localhost:3003",
-                    "*"
+                    "http://localhost:5173"
                 ],
                 methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
                 allowedHeaders: ["Content-Type", "Authorization"],

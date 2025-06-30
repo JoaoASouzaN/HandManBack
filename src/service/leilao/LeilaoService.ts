@@ -19,4 +19,12 @@ export class LeilaoService {
   async adicionarLance(leilaoId: string, usuarioId: string, valor: number): Promise<Leilao | undefined> {
     return this.repo.addLance(leilaoId, { usuarioId, valor });
   }
+
+  async deletarLeilao(id: string): Promise<void> {
+    await this.repo.deleteById(id);
+  }
+
+  async atualizarStatus(id: string, status: string): Promise<void> {
+    await this.repo.updateStatus(id, status);
+  }
 }

@@ -80,13 +80,11 @@ export class ServicoService extends BaseService {
         }
     }
 
-    public async buscarServico(idServico:string){
-        try{
-            const servico = await this.servicoRepository.buscarServico(idServico);
-            return servico;
-        }catch(error){
-            this.handleError(error);
-        }
+    public async buscarServico(idServico: string) {
+        console.log('[ServicoService] Buscando serviço com id:', idServico);
+        const servico = await this.servicoRepository.buscarServico(idServico);
+        console.log('[ServicoService] Resultado da busca:', servico);
+        return servico;
     }
 
     public async atualizarImagemServico(id_servico:string,imagems:string){

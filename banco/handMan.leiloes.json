@@ -1,65 +1,13 @@
 [
   {
-    "id": "1",
-    "id_usuario": "usuario001",
-    "titulo": "Serviço de Mudança Residencial",
-    "descricao": "Preciso de ajuda para mudança de apartamento. 2 quartos, sala, cozinha e área de serviço. Mobília média.",
-    "valorDesejado": 500,
-    "detalhes": "Mudança do 3º andar para o 1º andar. Elevador disponível. Horário preferencial: manhã.",
-    "prazoLimite": "2025-02-28T23:59:59.000Z",
-    "lances": [
-      {
-        "usuarioId": "user1",
-        "valor": 450,
-        "data": "2024-01-15T10:30:00.000Z"
-      },
-      {
-        "usuarioId": "user2",
-        "valor": 420,
-        "data": "2024-01-16T14:20:00.000Z"
-      }
-    ]
-  },
-  {
-    "id": "2",
-    "id_usuario": "usuario002",
-    "titulo": "Reparo em Móveis de Madeira",
-    "descricao": "Preciso de carpinteiro para reparar mesa de jantar e 2 cadeiras. Madeira maciça, pequenos danos.",
-    "valorDesejado": 300,
-    "detalhes": "Móveis antigos da família, preciso de cuidado especial. Trabalho pode ser feito no local.",
-    "prazoLimite": "2025-02-25T23:59:59.000Z",
-    "lances": [
-      {
-        "usuarioId": "user3",
-        "valor": 280,
-        "data": "2024-01-14T09:15:00.000Z"
-      }
-    ]
-  },
-  {
-    "id": "3",
-    "id_usuario": "usuario003",
-    "titulo": "Limpeza Pós-Obra",
-    "descricao": "Limpeza completa de apartamento após reforma. 80m², 3 quartos, muita poeira e resíduos.",
-    "valorDesejado": 400,
-    "detalhes": "Reforma acabou ontem, preciso de limpeza profissional. Incluir limpeza de janelas e varandas.",
-    "prazoLimite": "2025-02-20T23:59:59.000Z",
-    "lances": []
-  },
-  {
-    "id": "4",
-    "id_usuario": "usuario004",
-    "titulo": "Serviço de Elétrica",
-    "descricao": "Preciso de um eletricista para instalar ventilador de teto e trocar algumas tomadas. Trabalho simples e rápido.",
-    "valorDesejado": 200,
-    "detalhes": "Apartamento pequeno, 2 quartos. Horário flexível, pode ser feito durante a semana ou fim de semana.",
-    "prazoLimite": "2025-12-31T23:59:59.000Z",
-    "lances": [
-      {
-        "usuarioId": "fornecedor001",
-        "valor": 150,
-        "data": "2025-06-29T00:10:46.680Z"
-      }
-    ]
+    "titulo": "Manutencao armario",
+    "descricao": "a porta esta enterrando e a gaveta esta muito pesada e agarrando",
+    "valorDesejado": 150,
+    "detalhes": "Carpintaria",
+    "prazoLimite": "2025-07-01T07:30",
+    "id_usuario": "0197be5d-87d2-739e-88e6-10636ea98f9a",
+    "lances": [],
+    "id": "de9b9474-f447-425a-ad64-b7e2cdf045b1",
+    "status": "Ativo"
   }
 ]
