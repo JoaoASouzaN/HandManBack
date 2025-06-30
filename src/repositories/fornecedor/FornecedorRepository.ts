@@ -2,18 +2,62 @@ import { IFornecedor, Fornecedor } from '../../models/fornecedor/Fornecedor';
 import { typeFornecedor } from '../../types/fornecedorType';
 import { ServicoModel } from '../../models/servicoAgendado/Servico';
 import { Usuario } from '../../models/usuario/Usuario';
+import fs from 'fs/promises';
+import path from 'path';
+
+const fornecedoresPath = path.join(process.cwd(), 'banco/handMan.fornecedores.json');
 
 export class FornecedorRepository {
   private model = Fornecedor.getInstance().getModel();
   private servicoModel = ServicoModel;
   private usuarioModel = Usuario.getInstance().getModel();
 
+  // Método auxiliar para ler dados do JSON
+  private async readFornecedoresFromFile(): Promise<any[]> {
+    try {
+      console.log('Tentando ler arquivo de fornecedores:', fornecedoresPath);
+      const data = await fs.readFile(fornecedoresPath, 'utf-8');
+      const fornecedores = JSON.parse(data);
+      console.log('Fornecedores lidos:', fornecedores.length);
+      return fornecedores;
+    } catch (error) {
+      console.error('Erro ao ler arquivo de fornecedores:', error);
+      return [];
+    }
+  }
+
+  // Método auxiliar para escrever dados no JSON
+  private async writeFornecedoresToFile(fornecedores: any[]): Promise<void> {
+    try {
+      await fs.writeFile(fornecedoresPath, JSON.stringify(fornecedores, null, 2));
+    } catch (error) {
+      console.error('Erro ao escrever arquivo de fornecedores:', error);
+      throw error;
+    }
+  }
+
   public async criarFornecedor(
     fornecedor: typeFornecedor
   ): Promise<IFornecedor> {
     try {
-      const fornecedorSalvar = new this.model(fornecedor);
-      return await fornecedorSalvar.save();
+      // Para compatibilidade, também salvar no MongoDB se estiver disponível
+      try {
+        const fornecedorSalvar = new this.model(fornecedor);
+        return await fornecedorSalvar.save();
+      } catch (mongoError) {
+        console.log('MongoDB não disponível, salvando apenas em JSON');
+      }
+
+      // Salvar no arquivo JSON
+      const fornecedores = await this.readFornecedoresFromFile();
+      const novoFornecedor = {
+        _id: fornecedor.id_fornecedor,
+        ...fornecedor
+      };
+      fornecedores.push(novoFornecedor);
+      await this.writeFornecedoresToFile(fornecedores);
+      
+      return novoFornecedor as IFornecedor;
     } catch (error: unknown) {
       if (error instanceof Error) {
         throw new Error(`Erro ao criar fornecedor: ${error.message}`);
@@ -25,8 +69,32 @@ export class FornecedorRepository {
 
   public async buscarFornecedores() {
     try {
-      return await this.model.find();
+      console.log('Iniciando busca de fornecedores...');
+      
+      // Tentar buscar do MongoDB primeiro
+      try {
+        const fornecedores = await this.model.find();
+        if (fornecedores && fornecedores.length > 0) {
+          console.log('Fornecedores encontrados no MongoDB:', fornecedores.length);
+          return fornecedores;
+        }
+      } catch (mongoError) {
+        console.log('MongoDB não disponível, buscando do JSON');
+      }
+
+      // Se MongoDB falhar ou não tiver dados, buscar do JSON
+      const fornecedores = await this.readFornecedoresFromFile();
+      console.log('Fornecedores do JSON:', fornecedores.length);
+      
+      const fornecedoresFormatados = fornecedores.map(f => ({
+        ...f,
+        id_fornecedor: f._id
+      }));
+      
+      console.log('Fornecedores formatados:', fornecedoresFormatados.length);
+      return fornecedoresFormatados;
     } catch (error: unknown) {
+      console.error('Erro em buscarFornecedores:', error);
       if (error instanceof Error) {
         throw new Error(`Erro ao buscar fornecedores: ${error.message}`);
       } else {
@@ -37,8 +105,24 @@ export class FornecedorRepository {
 
   public async buscarFornecedorPorId(id: string) {
     try {
-      const fornecedor = await this.model.findOne({ id_fornecedor: id });
-      return fornecedor;
+      // Tentar buscar do MongoDB primeiro
+      try {
+        const fornecedor = await this.model.findOne({ id_fornecedor: id });
+        if (fornecedor) return fornecedor;
+      } catch (mongoError) {
+        console.log('MongoDB não disponível, buscando do JSON');
+      }
+
+      // Se MongoDB falhar, buscar do JSON
+      const fornecedores = await this.readFornecedoresFromFile();
+      const fornecedor = fornecedores.find(f => f._id === id);
+      if (fornecedor) {
+        return {
+          ...fornecedor,
+          id_fornecedor: fornecedor._id
+        };
+      }
+      return null;
     } catch (error: unknown) {
       if (error instanceof Error) {
         throw new Error(`Erro ao buscar fornecedor: ${error.message}`);
@@ -47,10 +131,26 @@ export class FornecedorRepository {
       }
     }
   }
+
   public async buscarFornecedoresPorCategoria(categoria_servico: string) {
     try {
-      const fornecedores = await this.model.find({ categoria_servico: categoria_servico });
-      return fornecedores;
+      // Tentar buscar do MongoDB primeiro
+      try {
+        const fornecedores = await this.model.find({ categoria_servico: categoria_servico });
+        if (fornecedores.length > 0) return fornecedores;
+      } catch (mongoError) {
+        console.log('MongoDB não disponível, buscando do JSON');
+      }
+
+      // Se MongoDB falhar, buscar do JSON
+      const fornecedores = await this.readFornecedoresFromFile();
+      const fornecedoresFiltrados = fornecedores.filter(f => 
+        f.categoria_servico && f.categoria_servico.includes(categoria_servico)
+      );
+      return fornecedoresFiltrados.map(f => ({
+        ...f,
+        id_fornecedor: f._id
+      }));
     } catch (error: unknown) {
       if (error instanceof Error) {
         throw new Error(`Error ao buscar fornecedores:${error.message}`)
@@ -62,16 +162,34 @@ export class FornecedorRepository {
 
   public async buscarFornecedoresPorTermo(categoria_servico: string, termo: string) {
     try {
-      const termoRegex = new RegExp(termo, 'i');
-      const fornecedores = await this.model.find({
-        $or: [
-          { categoria_servico: termoRegex },
-          { nome: termoRegex },
-          { descricao: termoRegex },
-          { sub_descricao: termoRegex }
-        ]
-      });
-      return fornecedores;
+      // Tentar buscar do MongoDB primeiro
+      try {
+        const termoRegex = new RegExp(termo, 'i');
+        const fornecedores = await this.model.find({
+          $or: [
+            { categoria_servico: termoRegex },
+            { nome: termoRegex },
+            { descricao: termoRegex },
+            { sub_descricao: termoRegex }
+          ]
+        });
+        if (fornecedores.length > 0) return fornecedores;
+      } catch (mongoError) {
+        console.log('MongoDB não disponível, buscando do JSON');
+      }
+
+      // Se MongoDB falhar, buscar do JSON
+      const fornecedores = await this.readFornecedoresFromFile();
+      const termoLower = termo.toLowerCase();
+      const fornecedoresFiltrados = fornecedores.filter(f => 
+        f.nome?.toLowerCase().includes(termoLower) ||
+        f.descricao?.toLowerCase().includes(termoLower) ||
+        f.sub_descricao?.toLowerCase().includes(termoLower)
+      );
+      return fornecedoresFiltrados.map(f => ({
+        ...f,
+        id_fornecedor: f._id
+      }));
     } catch (error: unknown) {
       if (error instanceof Error) {
         throw new Error(`Erro ao buscar fornecedores: ${error.message}`);
@@ -83,8 +201,24 @@ export class FornecedorRepository {
 
   public async buscarFornecedorPorEmail(email: string) {
     try {
-      const fornecedor = await this.model.findOne({ email });
-      return fornecedor;
+      // Tentar buscar do MongoDB primeiro
+      try {
+        const fornecedor = await this.model.findOne({ email });
+        if (fornecedor) return fornecedor;
+      } catch (mongoError) {
+        console.log('MongoDB não disponível, buscando do JSON');
+      }
+
+      // Se MongoDB falhar, buscar do JSON
+      const fornecedores = await this.readFornecedoresFromFile();
+      const fornecedor = fornecedores.find(f => f.email === email);
+      if (fornecedor) {
+        return {
+          ...fornecedor,
+          id_fornecedor: fornecedor._id
+        };
+      }
+      return null;
     } catch (error: unknown) {
       if (error instanceof Error) {
         throw new Error(`Erro ao buscar fornecedor: ${error.message}`);
@@ -167,7 +301,6 @@ export class FornecedorRepository {
       }
     }
   }
-
 
   public async atualizarMediaAvaliacoes(id: string, media: number) {
     try {

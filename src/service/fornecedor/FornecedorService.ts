@@ -85,10 +85,7 @@ export class FornecedorService extends BaseService {
     public async buscarFornecedores(): Promise<typeFornecedor[]> {
         try {
             const fornecedores = await this.fornecedorRepository.buscarFornecedores();
-            if (fornecedores.length === 0) {
-                throw new CustomError('Nenhum fornecedor encontrado', 404);
-            }
-            return fornecedores;
+            return fornecedores || [];
         } catch (error: unknown) {
             this.handleError(error);
         }
@@ -116,19 +113,13 @@ export class FornecedorService extends BaseService {
             // Se a categoria for undefined, null, vazia ou só espaços
             if (categoria_servico === "Controle") {
                 const todosFornecedores = await this.fornecedorRepository.buscarFornecedores();
-                if (todosFornecedores.length === 0) {
-                    throw new CustomError('Nenhum fornecedor encontrado', 404);
-                }
-                return this.ordenarFornecedores(todosFornecedores, ordenarPor, ordem);
+                return this.ordenarFornecedores(todosFornecedores || [], ordenarPor, ordem);
             }
 
             const fornecedores = await this.fornecedorRepository.buscarFornecedoresPorCategoria(categoria_servico);
             
-            if(fornecedores.length === 0){
-                throw new CustomError('Categoria inexistente', 404);
-            }
-
-            return this.ordenarFornecedores(fornecedores, ordenarPor, ordem);
+            // Retornar array vazio em vez de lançar erro
+            return this.ordenarFornecedores(fornecedores || [], ordenarPor, ordem);
         } catch (error) {
             this.handleError(error);
         }
@@ -147,11 +138,8 @@ export class FornecedorService extends BaseService {
 
             const fornecedores = await this.fornecedorRepository.buscarFornecedoresPorTermo(categoria_servico, termo);
             
-            if (fornecedores.length === 0) {
-                throw new CustomError('Nenhum fornecedor encontrado para o termo pesquisado', 404);
-            }
-
-            return this.ordenarFornecedores(fornecedores, ordenarPor, ordem);
+            // Retornar array vazio em vez de lançar erro
+            return this.ordenarFornecedores(fornecedores || [], ordenarPor, ordem);
         } catch (error) {
             this.handleError(error);
         }

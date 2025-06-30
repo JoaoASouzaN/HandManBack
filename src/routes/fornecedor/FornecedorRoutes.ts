@@ -24,4 +24,5 @@ fornecedorRouter.post('/:id/solicitacao', fornecedorController.adicionarSolicita
 fornecedorRouter.put('/:id/disponibilidade', fornecedorController.atualizarDisponibilidade);
 fornecedorRouter.put('/:id/avaliacoes', fornecedorController.atualizarMediaAvaliacoes);
 fornecedorRouter.get('/:id/solicitacoes',fornecedorController.buscarSolicitacoes);
+fornecedorRouter.post('/push-token', fornecedorController.salvarPushToken);
 fornecedorRouter.delete('/:id', fornecedorController.deletarFornecedor); 

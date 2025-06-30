@@ -26,7 +26,28 @@ export class LeilaoController {
   public listarLeiloes = async (req: Request, res: Response): Promise<void> => {
     try {
       const leiloes = await leilaoService.listarLeiloes();
-      res.json(leiloes);
+      
+      // Formatar os leilões para o formato esperado pelo mobile
+      const leiloesFormatados = leiloes.map(leilao => ({
+        id: leilao.id,
+        titulo: leilao.titulo,
+        descricao: leilao.descricao,
+        valorDesejado: leilao.valorDesejado,
+        detalhes: leilao.detalhes,
+        prazoLimite: leilao.prazoLimite,
+        categoria: "Serviços", // Campo padrão
+        imagem: "", // Campo opcional
+        imagemCapa: "", // Campo opcional
+        lances: leilao.lances.map(lance => ({
+          id: Math.random().toString(36).substr(2, 9),
+          usuarioId: lance.usuarioId,
+          valor: lance.valor,
+          data: lance.data,
+          nomeUsuario: `Usuário ${lance.usuarioId}` // Campo opcional
+        }))
+      }));
+      
+      res.json(leiloesFormatados);
     } catch (error) {
       res.status(500).json({ erro: "Erro ao listar leilões", detalhes: error });
     }
@@ -63,19 +84,24 @@ export class LeilaoController {
         return;
       }
       
-      // Formata o leilão para o formato esperado pelo frontend
+      // Formata o leilão para o formato esperado pelo mobile
       const leilaoFormatado = {
-        id_leilao: leilao.id,
+        id: leilao.id,
         titulo: leilao.titulo,
         descricao: leilao.descricao,
-        categoria: "Serviços", // Campo padrão, pode ser expandido depois
-        data_final: leilao.prazoLimite,
-        id_usuario: "user1", // Campo padrão, pode ser expandido depois
+        valorDesejado: leilao.valorDesejado,
+        detalhes: leilao.detalhes,
+        prazoLimite: leilao.prazoLimite,
+        categoria: "Serviços", // Campo padrão
+        imagem: "", // Campo opcional
+        imagemCapa: "", // Campo opcional
+        id_usuario: leilao.id_usuario || "user1", // Campo padrão
         lances: leilao.lances.map(lance => ({
-          id_lance: Math.random().toString(36).substr(2, 9), // ID temporário
-          id_usuario: lance.usuarioId,
+          id: Math.random().toString(36).substr(2, 9),
+          usuarioId: lance.usuarioId,
           valor: lance.valor,
-          criado_em: lance.data
+          data: lance.data,
+          nomeUsuario: `Usuário ${lance.usuarioId}` // Campo opcional
         }))
       };
       
@@ -115,14 +141,41 @@ export class LeilaoController {
         return;
       }
 
-      // Verificar se o usuário está tentando dar lance em seu próprio leilão
+      // Buscar o leilão para validar o valor
       const leilao = await leilaoService.buscarPorId(id);
-      if (leilao && leilao.id_usuario === tokenData.id) {
+      if (!leilao) {
+        res.status(404).json({ erro: "Leilão não encontrado" });
+        return;
+      }
+
+      // Verificar se o usuário está tentando dar lance em seu próprio leilão
+      if (leilao.id_usuario === tokenData.id) {
         res.status(400).json({ 
           erro: "Você não pode dar lance em seu próprio leilão",
           detalhes: "O criador do leilão não pode participar dos lances"
         });
         return;
+      }
+
+      // Validar se o lance é menor que o valor desejado
+      if (valor >= leilao.valorDesejado) {
+        res.status(400).json({ 
+          erro: "Lance inválido",
+          detalhes: `O lance deve ser menor que R$ ${leilao.valorDesejado}. Você ofereceu R$ ${valor}`
+        });
+        return;
+      }
+
+      // Verificar se já existe um lance menor
+      if (leilao.lances.length > 0) {
+        const menorLance = Math.min(...leilao.lances.map(l => l.valor));
+        if (valor >= menorLance) {
+          res.status(400).json({ 
+            erro: "Lance muito alto",
+            detalhes: `Já existe um lance de R$ ${menorLance}. Seu lance deve ser menor.`
+          });
+          return;
+        }
       }
 
       const resultado = await leilaoService.adicionarLance(id, tokenData.id, valor);
@@ -140,12 +193,24 @@ export class LeilaoController {
       const leiloesDoUsuario = leiloes.filter(leilao => leilao.id_usuario === id);
       // Formatar para o frontend
       const leiloesFormatados = leiloesDoUsuario.map(leilao => ({
-        id_leilao: leilao.id,
+        id: leilao.id,
         titulo: leilao.titulo,
+        descricao: leilao.descricao,
+        valorDesejado: leilao.valorDesejado,
+        detalhes: leilao.detalhes,
+        prazoLimite: leilao.prazoLimite,
+        categoria: "Serviços",
         valor_atual: leilao.lances.length > 0 ? leilao.lances[leilao.lances.length - 1].valor : leilao.valorDesejado,
         prazo: leilao.prazoLimite,
         status: new Date(leilao.prazoLimite) > new Date() ? 'Ativo' : 'Finalizado',
-        total_lances: leilao.lances.length
+        total_lances: leilao.lances.length,
+        lances: leilao.lances.map(lance => ({
+          id: Math.random().toString(36).substr(2, 9),
+          usuarioId: lance.usuarioId,
+          valor: lance.valor,
+          data: lance.data,
+          nomeUsuario: `Usuário ${lance.usuarioId}`
+        }))
       }));
       res.json(leiloesFormatados);
     } catch (error) {

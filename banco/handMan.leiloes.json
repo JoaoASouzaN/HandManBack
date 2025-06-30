@@ -1,11 +1,12 @@
 [
   {
     "id": "1",
+    "id_usuario": "usuario001",
     "titulo": "Serviço de Mudança Residencial",
     "descricao": "Preciso de ajuda para mudança de apartamento. 2 quartos, sala, cozinha e área de serviço. Mobília média.",
     "valorDesejado": 500,
     "detalhes": "Mudança do 3º andar para o 1º andar. Elevador disponível. Horário preferencial: manhã.",
-    "prazoLimite": "2025-01-31T23:59:59.000Z",
+    "prazoLimite": "2025-02-28T23:59:59.000Z",
     "lances": [
       {
         "usuarioId": "user1",
@@ -14,18 +15,19 @@
       },
       {
         "usuarioId": "user2",
-        "valor": 480,
+        "valor": 420,
         "data": "2024-01-16T14:20:00.000Z"
       }
     ]
   },
   {
     "id": "2",
+    "id_usuario": "usuario002",
     "titulo": "Reparo em Móveis de Madeira",
     "descricao": "Preciso de carpinteiro para reparar mesa de jantar e 2 cadeiras. Madeira maciça, pequenos danos.",
     "valorDesejado": 300,
     "detalhes": "Móveis antigos da família, preciso de cuidado especial. Trabalho pode ser feito no local.",
-    "prazoLimite": "2025-01-25T23:59:59.000Z",
+    "prazoLimite": "2025-02-25T23:59:59.000Z",
     "lances": [
       {
         "usuarioId": "user3",
@@ -36,23 +38,26 @@
   },
   {
     "id": "3",
+    "id_usuario": "usuario003",
     "titulo": "Limpeza Pós-Obra",
     "descricao": "Limpeza completa de apartamento após reforma. 80m², 3 quartos, muita poeira e resíduos.",
     "valorDesejado": 400,
     "detalhes": "Reforma acabou ontem, preciso de limpeza profissional. Incluir limpeza de janelas e varandas.",
-    "prazoLimite": "2025-01-20T23:59:59.000Z",
+    "prazoLimite": "2025-02-20T23:59:59.000Z",
     "lances": []
   },
   {
     "id": "4",
-    "titulo": "Leilão de Teste - Serviço de Elétrica",
+    "id_usuario": "usuario004",
+    "titulo": "Serviço de Elétrica",
     "descricao": "Preciso de um eletricista para instalar ventilador de teto e trocar algumas tomadas. Trabalho simples e rápido.",
     "valorDesejado": 200,
     "detalhes": "Apartamento pequeno, 2 quartos. Horário flexível, pode ser feito durante a semana ou fim de semana.",
     "prazoLimite": "2025-12-31T23:59:59.000Z",
     "lances": [
       {
-        "valor": 300,
+        "usuarioId": "fornecedor001",
+        "valor": 150,
         "data": "2025-06-29T00:10:46.680Z"
       }
     ]

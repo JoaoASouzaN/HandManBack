@@ -1,0 +1,3 @@
+JWT_KEY=handman_secret_key_2024_very_secure_and_unique
+MONGODB_URI=mongodb://localhost:27017/handman
+PORT=3003 

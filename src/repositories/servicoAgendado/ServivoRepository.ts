@@ -39,17 +39,17 @@ export class ServicoRepository {
                         id_usuario: servicoObj.id_usuario,
                         id_fornecedor: servicoObj.id_fornecedor,
                         categoria: servicoObj.categoria,
-                        data: servicoObj.data,
-                        horario: servicoObj.horario,
+                        data: new Date(servicoObj.data),
+                        horario: new Date(servicoObj.horario),
                         status: servicoObj.status,
-                        data_submisao: servicoObj.data_submisao,
+                        data_submisao: new Date(servicoObj.data_submisao),
                         id_pagamento: servicoObj.id_pagamento,
                         id_avaliacao: servicoObj.id_avaliacao,
                         descricao: servicoObj.descricao,
-                        avaliado:servicoObj.avaliado,
-                        valor:servicoObj.valor,
+                        avaliado: servicoObj.avaliado,
+                        valor: servicoObj.valor,
                         fornecedor: fornecedor ? {
-                            imagemPerfil: fornecedor.imagemPerfil,
+                            imagemPerfil: fornecedor.imagemPerfil || '',
                             nome: fornecedor.nome,
                             email: fornecedor.email,
                             telefone: fornecedor.telefone,
@@ -122,19 +122,19 @@ export class ServicoRepository {
                 id_servico: servicoObj.id_servico,
                 id_fornecedor: servicoObj.id_fornecedor,
                 id_usuario: servicoObj.id_usuario,
-                imagems:servicoObj.imagems,
-                data_submisao: servicoObj.data_submisao,
+                imagems: servicoObj.imagems,
+                data_submisao: new Date(servicoObj.data_submisao),
                 categoria: servicoObj.categoria,
-                data: servicoObj.data,
-                horario: servicoObj.horario,
+                data: new Date(servicoObj.data),
+                horario: new Date(servicoObj.horario),
                 status: servicoObj.status,
                 id_pagamento: servicoObj.id_pagamento,
                 id_avaliacao: servicoObj.id_avaliacao,
                 descricao: servicoObj.descricao,
-                valor:servicoObj.valor,
-                avaliado:servicoObj.avaliado,
+                valor: servicoObj.valor,
+                avaliado: servicoObj.avaliado,
                 fornecedor: fornecedor ? {
-                    imagemPerfil: fornecedor.imagemPerfil,
+                    imagemPerfil: fornecedor.imagemPerfil || '',
                     nome: fornecedor.nome,
                     email: fornecedor.email,
                     telefone: fornecedor.telefone,
@@ -171,21 +171,21 @@ export class ServicoRepository {
                 id_fornecedor: servicoObj.id_fornecedor,
                 id_usuario: servicoObj.id_usuario,
                 imagems: servicoObj.imagems,
-                data_submisao: servicoObj.data_submisao,
+                data_submisao: new Date(servicoObj.data_submisao),
                 categoria: servicoObj.categoria,
-                data: servicoObj.data,
-                horario: servicoObj.horario,
+                data: new Date(servicoObj.data),
+                horario: new Date(servicoObj.horario),
                 status: servicoObj.status,
                 id_pagamento: servicoObj.id_pagamento,
                 id_avaliacao: servicoObj.id_avaliacao,
                 descricao: servicoObj.descricao,
                 valor: servicoObj.valor,
                 usuario: usuario ? {
-                    imagemPerfil: usuario.picture,
+                    imagemPerfil: usuario.picture || '',
                     nome: usuario.nome,
                     email: usuario.email,
                     telefone: usuario.telefone,
-                    endereco:usuario.endereco
+                    endereco: usuario.endereco
                 } : null
             };
 
@@ -194,6 +194,19 @@ export class ServicoRepository {
                 throw new Error(`Erro ao buscar serviço: ${error.message}`);
             } else {
                 throw new Error("Erro desconhecido ao buscar serviço");
+            }
+        }
+    }
+
+    public async buscarServicosPorFornecedorId(id_fornecedor: string): Promise<Iservico[]> {
+        try {
+            const servicos = await ServicoModel.find({ id_fornecedor });
+            return servicos;
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                throw new Error(`Erro ao buscar serviços do fornecedor: ${error.message}`);
+            } else {
+                throw new Error("Erro desconhecido ao buscar serviços do fornecedor");
             }
         }
     }

@@ -5,11 +5,13 @@ import { UsuarioRepository } from "../../repositories/usuario/UsuarioRepository"
 import { typeServico, ServicoComUsuario } from "../../types/servicoType";
 import { BaseService } from "../BaseService";
 import { CustomError } from "../CustomError";
+import { NotificationService } from "../NotificationService";
 
 export class ServicoService extends BaseService {
     private servicoRepository = new ServicoRepository();
     private fornecedorRepository = new FornecedorRepository();
     private usuarioRepository = new UsuarioRepository();
+    private notificationService = new NotificationService();
 
     //Salva a soliçitação na tabela de serviços e também adiciona o id da tabela serviços ao fornecedor
     public async criarServico(servico:typeServico):Promise<Iservico>{
@@ -28,6 +30,18 @@ export class ServicoService extends BaseService {
                 throw new CustomError('Usuário não encontrado',404);
             }
 
+            // Verificar conflitos de horário
+            const conflitos = await this.notificationService.verificarConflitosHorario(
+                servico.id_fornecedor,
+                servico.data,
+                servico.horario
+            );
+
+            if (conflitos.hasConflict) {
+                const mensagem = this.notificationService.gerarMensagemConflito(conflitos);
+                throw new CustomError(mensagem, 409); // 409 Conflict
+            }
+
             await this.fornecedorRepository.adicionarSolicitacao(servico.id_fornecedor,servico.id_servico);
 
             return await this.servicoRepository.criarServico(servico);
@@ -43,6 +57,21 @@ export class ServicoService extends BaseService {
 
             if(!servico){
                 throw new CustomError('Servico não encontrado',404);
+            }
+
+            // Se estiver atualizando data ou horário, verificar conflitos
+            if (dadosAtualizados.data || dadosAtualizados.horario) {
+                const conflitos = await this.notificationService.verificarConflitosHorario(
+                    servico.id_fornecedor,
+                    dadosAtualizados.data || servico.data,
+                    dadosAtualizados.horario || servico.horario,
+                    id_servico // Excluir o próprio serviço da verificação
+                );
+
+                if (conflitos.hasConflict) {
+                    const mensagem = this.notificationService.gerarMensagemConflito(conflitos);
+                    throw new CustomError(mensagem, 409); // 409 Conflict
+                }
             }
 
             return servico;
@@ -90,6 +119,39 @@ export class ServicoService extends BaseService {
             }
 
             return await this.servicoRepository.atualizarValorServico(id_servico, valor);
+        } catch (error) {
+            this.handleError(error);
+        }
+    }
+
+    /**
+     * Verifica conflitos de horário para um fornecedor
+     */
+    public async verificarConflitosHorario(
+        fornecedorId: string,
+        data: Date,
+        horario: Date,
+        servicoId?: string
+    ) {
+        try {
+            return await this.notificationService.verificarConflitosHorario(
+                fornecedorId,
+                data,
+                horario,
+                servicoId
+            );
+        } catch (error) {
+            this.handleError(error);
+        }
+    }
+
+    /**
+     * Busca todos os serviços de um usuário específico
+     */
+    public async buscarServicosPorUsuarioId(idUsuario: string) {
+        try {
+            const servicos = await this.servicoRepository.buscarServicosPorUsuarioId(idUsuario);
+            return servicos;
         } catch (error) {
             this.handleError(error);
         }

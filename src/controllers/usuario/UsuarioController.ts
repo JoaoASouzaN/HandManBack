@@ -128,9 +128,9 @@ export class UsuarioController {
         try {
             const { email, senha } = req.body;
 
-            const usuario = await usuarioService.login(email, senha);
+            const token = await usuarioService.login(email, senha);
 
-            res.status(200).json({ token: usuario });
+            res.status(200).json({ token });
         } catch (error: unknown) {
             if (error instanceof CustomError) {
                 res.status(error.statusCode).json({ error: error.message });

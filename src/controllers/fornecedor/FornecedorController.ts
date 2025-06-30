@@ -4,7 +4,6 @@ import { CustomError } from '../../service/CustomError';
 import { typeFornecedor } from '../../types/fornecedorType';
 import { uploadImagemBuffer } from '../../service/cloudinaryService';
 
-
 const fornecedorService = new FornecedorService();
 
 export class FornecedorController {
@@ -170,9 +169,12 @@ export class FornecedorController {
 
     public buscarFornecedores = async (req: Request, res: Response): Promise<void> => {
         try {
+            console.log('Controller: Iniciando busca de fornecedores');
             const fornecedores = await fornecedorService.buscarFornecedores();
+            console.log('Controller: Fornecedores encontrados:', fornecedores.length);
             res.status(200).json(fornecedores);
         } catch (error: unknown) {
+            console.error('Controller: Erro ao buscar fornecedores:', error);
             if (error instanceof CustomError) {
                 res.status(error.statusCode).json({ error: error.message });
             } else {
@@ -328,8 +330,37 @@ export class FornecedorController {
             const { id } = req.params;
             const solicitacoes = await fornecedorService.buscarSolicitacoesFornecedor(id);
             res.status(200).json(solicitacoes);
-        } catch (error: any) {
-            res.status(error.statusCode || 500).json({ message: error.message });
+        } catch (error: unknown) {
+            if (error instanceof CustomError) {
+                res.status(error.statusCode).json({ error: error.message });
+            } else {
+                res.status(500).json({ error: 'Erro desconhecido ao buscar solicitações' });
+            }
         }
-    }
+    };
+
+    public salvarPushToken = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const { userId, pushToken } = req.body;
+            
+            if (!userId || !pushToken) {
+                res.status(400).json({ error: 'userId e pushToken são obrigatórios' });
+                return;
+            }
+
+            // Por enquanto, apenas logamos o token para debug
+            console.log(`Token de notificação salvo para fornecedor ${userId}:`, pushToken);
+            
+            // TODO: Implementar salvamento no banco de dados se necessário
+            // await fornecedorService.salvarPushToken(userId, pushToken);
+            
+            res.status(200).json({ message: 'Token de notificação salvo com sucesso' });
+        } catch (error: unknown) {
+            if (error instanceof CustomError) {
+                res.status(error.statusCode).json({ error: error.message });
+            } else {
+                res.status(500).json({ error: 'Erro desconhecido ao salvar token de notificação' });
+            }
+        }
+    };
 } 

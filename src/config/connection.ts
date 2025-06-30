@@ -10,13 +10,17 @@ export abstract class BaseBancoDeDados {
     
     protected async conectar(): Promise<void> {
         try {
-            await mongoose.connect(process.env.MONGO_URI as string, {
-                dbName: process.env.DB_NAME_PATIENT, // Nome do banco de dados
+            const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/handman';
+            const dbName = process.env.DB_NAME_PATIENT || 'handman';
+            
+            await mongoose.connect(mongoUri, {
+                dbName: dbName,
             });
             console.log('Conectado ao MongoDB com sucesso!');
         } catch (error) {
             console.error('Erro ao conectar ao MongoDB:', error);
-            process.exit(1); // Encerra o processo em caso de erro
+            console.log('Continuando com dados JSON...');
+            // Não encerra o processo, permite usar JSON como fallback
         }
     }
 }

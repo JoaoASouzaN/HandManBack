@@ -1,6 +1,7 @@
 [
   {
     "_id": "fornecedor001",
+    "id_fornecedor": "fornecedor001",
     "nome": "Paulo Eletricista",
     "cpf": "111.222.333-96",
     "email": "paulo.eletricista@email.com",
@@ -10,19 +11,45 @@
       "rua": "Av. Energia, 202",
       "cidade": "São Paulo",
       "estado": "SP",
-      "cep": "03030-000"
+      "cep": "03030-000",
+      "numero": "202",
+      "tipoMoradia": "Apartamento"
     },
-    "categoria_servico": ["cat001"],
-    "descricao": "Especialista em fiação, disjuntores e tomadas.",
-    "disponibilidade": [
-      { "data": "2025-04-15", "horario": "09:00-10:00", "status": "livre" },
-      { "data": "2025-04-15", "horario": "10:00-11:00", "status": "ocupado" }
+    "categoria_servico": [
+      "Elétricista",
+      "Instalação"
     ],
-    "solicitacoes": ["servico001", "servico002"],
+    "descricao": "Especialista em fiação, disjuntores e tomadas.",
+    "sub_descricao": "Instalações elétricas residenciais e comerciais",
+    "valor": 80,
+    "imagemPerfil": "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=150&h=150&fit=crop&crop=face",
+    "imagemIlustrativa": "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400&h=300&fit=crop",
+    "imagemServicos": [
+      "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=300&h=200&fit=crop",
+      "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=300&h=200&fit=crop"
+    ],
+    "sobre": "Eletricista profissional com mais de 10 anos de experiência em instalações residenciais e comerciais.",
+    "disponibilidade": [
+      {
+        "data": "2025-04-15",
+        "horario": "09:00-10:00",
+        "status": "livre"
+      },
+      {
+        "data": "2025-04-15",
+        "horario": "10:00-11:00",
+        "status": "ocupado"
+      }
+    ],
+    "solicitacoes": [
+      "servico001",
+      "servico002"
+    ],
     "media_avaliacoes": 4.8
   },
   {
     "_id": "fornecedor002",
+    "id_fornecedor": "fornecedor002",
     "nome": "Juliana Encanadora",
     "cpf": "444.555.666-77",
     "email": "juliana.encanadora@email.com",
@@ -32,18 +59,39 @@
       "rua": "Av. Água Clara, 456",
       "cidade": "Niterói",
       "estado": "RJ",
-      "cep": "24000-000"
+      "cep": "24000-000",
+      "numero": "456",
+      "tipoMoradia": "Casa"
     },
-    "categoria_servico": ["cat002"],
-    "descricao": "Reparos hidráulicos e desentupimentos em geral.",
-    "disponibilidade": [
-      { "data": "2025-04-16", "horario": "14:00-15:00", "status": "livre" }
+    "categoria_servico": [
+      "Encanamento",
+      "Desentupimento"
     ],
-    "solicitacoes": ["servico003"],
+    "descricao": "Reparos hidráulicos e desentupimentos em geral.",
+    "sub_descricao": "Soluções completas para problemas hidráulicos",
+    "valor": 95,
+    "imagemPerfil": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&crop=face",
+    "imagemIlustrativa": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=300&fit=crop",
+    "imagemServicos": [
+      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=200&fit=crop",
+      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=200&fit=crop"
+    ],
+    "sobre": "Encanadora especializada em reparos hidráulicos e desentupimentos com equipamentos modernos.",
+    "disponibilidade": [
+      {
+        "data": "2025-04-16",
+        "horario": "14:00-15:00",
+        "status": "livre"
+      }
+    ],
+    "solicitacoes": [
+      "servico003"
+    ],
     "media_avaliacoes": 4.6
   },
   {
     "_id": "fornecedor003",
+    "id_fornecedor": "fornecedor003",
     "nome": "Rafael Montador",
     "cpf": "777.888.999-00",
     "email": "rafael.montador@email.com",
@@ -53,19 +101,44 @@
       "rua": "Rua dos Móveis, 123",
       "cidade": "Campinas",
       "estado": "SP",
-      "cep": "13000-001"
+      "cep": "13000-001",
+      "numero": "123",
+      "tipoMoradia": "Apartamento"
     },
-    "categoria_servico": ["cat003"],
-    "descricao": "Montagem de móveis sob medida, móveis prontos e reparos.",
-    "disponibilidade": [
-      { "data": "2025-04-17", "horario": "08:00-09:00", "status": "livre" },
-      { "data": "2025-04-17", "horario": "10:00-11:00", "status": "livre" }
+    "categoria_servico": [
+      "Montagem",
+      "Móveis"
     ],
-    "solicitacoes": ["servico004"],
+    "descricao": "Montagem de móveis sob medida, móveis prontos e reparos.",
+    "sub_descricao": "Montagem profissional de móveis e reparos",
+    "valor": 70,
+    "imagemPerfil": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+    "imagemIlustrativa": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop",
+    "imagemServicos": [
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop"
+    ],
+    "sobre": "Montador profissional especializado em móveis sob medida e montagem de móveis prontos.",
+    "disponibilidade": [
+      {
+        "data": "2025-04-17",
+        "horario": "08:00-09:00",
+        "status": "livre"
+      },
+      {
+        "data": "2025-04-17",
+        "horario": "10:00-11:00",
+        "status": "livre"
+      }
+    ],
+    "solicitacoes": [
+      "servico004"
+    ],
     "media_avaliacoes": 4.9
   },
   {
     "_id": "fornecedor004",
+    "id_fornecedor": "fornecedor004",
     "nome": "André Técnico",
     "cpf": "321.654.987-01",
     "email": "andre.tecnico@email.com",
@@ -75,14 +148,335 @@
       "rua": "Av. Tecnologia, 789",
       "cidade": "Belo Horizonte",
       "estado": "MG",
-      "cep": "30150-090"
+      "cep": "30150-090",
+      "numero": "789",
+      "tipoMoradia": "Casa"
     },
-    "categoria_servico": ["cat004"],
+    "categoria_servico": [
+      "Informática",
+      "Manutenção"
+    ],
     "descricao": "Manutenção de computadores, notebooks e redes.",
+    "sub_descricao": "Técnico em informática e redes",
+    "valor": 85,
+    "imagemPerfil": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+    "imagemIlustrativa": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=300&fit=crop",
+    "imagemServicos": [
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=200&fit=crop",
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=200&fit=crop"
+    ],
+    "sobre": "Técnico em informática com especialização em manutenção de computadores e configuração de redes.",
     "disponibilidade": [
-      { "data": "2025-04-18", "horario": "13:00-14:00", "status": "livre" }
+      {
+        "data": "2025-04-18",
+        "horario": "13:00-14:00",
+        "status": "livre"
+      }
     ],
     "solicitacoes": [],
     "media_avaliacoes": 4.4
+  },
+  {
+    "_id": "fornecedor005",
+    "id_fornecedor": "fornecedor005",
+    "nome": "Maria Limpeza",
+    "cpf": "987.654.321-00",
+    "email": "maria.limpeza@email.com",
+    "telefone": "11987654321",
+    "senha": "maria123",
+    "endereco": {
+      "rua": "Rua da Limpeza, 555",
+      "cidade": "São Paulo",
+      "estado": "SP",
+      "cep": "01234-567",
+      "numero": "555",
+      "tipoMoradia": "Apartamento"
+    },
+    "categoria_servico": [
+      "Limpeza",
+      "Higienização"
+    ],
+    "descricao": "Serviços de limpeza residencial e comercial.",
+    "sub_descricao": "Limpeza profissional e higienização",
+    "valor": 60,
+    "imagemPerfil": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+    "imagemIlustrativa": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=300&fit=crop",
+    "imagemServicos": [
+      "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=200&fit=crop",
+      "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=200&fit=crop"
+    ],
+    "sobre": "Profissional de limpeza com experiência em residências e escritórios.",
+    "disponibilidade": [
+      {
+        "data": "2025-04-19",
+        "horario": "08:00-09:00",
+        "status": "livre"
+      },
+      {
+        "data": "2025-04-19",
+        "horario": "14:00-15:00",
+        "status": "livre"
+      }
+    ],
+    "solicitacoes": [],
+    "media_avaliacoes": 4.7
+  },
+  {
+    "_id": "fornecedor006",
+    "id_fornecedor": "fornecedor006",
+    "nome": "Carlos Pintor",
+    "cpf": "123.456.789-00",
+    "email": "carlos.pintor@email.com",
+    "telefone": "11912345678",
+    "senha": "carlos123",
+    "endereco": {
+      "rua": "Av. das Cores, 321",
+      "cidade": "Rio de Janeiro",
+      "estado": "RJ",
+      "cep": "20000-000",
+      "numero": "321",
+      "tipoMoradia": "Casa"
+    },
+    "categoria_servico": [
+      "Pintura",
+      "Acabamento"
+    ],
+    "descricao": "Pintura residencial e comercial com acabamentos finos.",
+    "sub_descricao": "Pintura profissional e acabamentos",
+    "valor": 75,
+    "imagemPerfil": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
+    "imagemIlustrativa": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=300&fit=crop",
+    "imagemServicos": [
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=200&fit=crop",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=200&fit=crop"
+    ],
+    "sobre": "Pintor profissional com mais de 15 anos de experiência em pintura residencial e comercial.",
+    "disponibilidade": [
+      {
+        "data": "2025-04-20",
+        "horario": "09:00-10:00",
+        "status": "livre"
+      },
+      {
+        "data": "2025-04-20",
+        "horario": "15:00-16:00",
+        "status": "livre"
+      }
+    ],
+    "solicitacoes": [],
+    "media_avaliacoes": 4.5
+  },
+  {
+    "_id": "fornecedor007",
+    "id_fornecedor": "fornecedor007",
+    "nome": "João Mudanças",
+    "cpf": "111.222.333-44",
+    "email": "joao.mudancas@email.com",
+    "telefone": "11987654321",
+    "senha": "joao123",
+    "endereco": {
+      "rua": "Rua das Mudanças, 789",
+      "cidade": "São Paulo",
+      "estado": "SP",
+      "cep": "01234-567",
+      "numero": "789",
+      "tipoMoradia": "Casa"
+    },
+    "categoria_servico": [
+      "Mudança",
+      "Transporte"
+    ],
+    "descricao": "Serviços de mudança residencial e comercial com caminhão próprio.",
+    "sub_descricao": "Mudanças seguras e pontuais",
+    "valor": 120,
+    "imagemPerfil": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+    "imagemIlustrativa": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop",
+    "imagemServicos": [
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop"
+    ],
+    "sobre": "Profissional de mudanças com mais de 8 anos de experiência em transportes residenciais e comerciais.",
+    "disponibilidade": [
+      {
+        "data": "2025-04-21",
+        "horario": "08:00-09:00",
+        "status": "livre"
+      },
+      {
+        "data": "2025-04-21",
+        "horario": "14:00-15:00",
+        "status": "livre"
+      }
+    ],
+    "solicitacoes": [],
+    "media_avaliacoes": 4.6
+  },
+  {
+    "_id": "fornecedor008",
+    "id_fornecedor": "fornecedor008",
+    "nome": "Pedro Carpinteiro",
+    "cpf": "555.666.777-88",
+    "email": "pedro.carpinteiro@email.com",
+    "telefone": "11912345678",
+    "senha": "pedro123",
+    "endereco": {
+      "rua": "Rua da Madeira, 456",
+      "cidade": "Campinas",
+      "estado": "SP",
+      "cep": "13000-001",
+      "numero": "456",
+      "tipoMoradia": "Casa"
+    },
+    "categoria_servico": [
+      "Carpintaria",
+      "Marcenaria"
+    ],
+    "descricao": "Carpintaria e marcenaria sob medida, reparos e restauração de móveis.",
+    "sub_descricao": "Carpintaria profissional e marcenaria",
+    "valor": 90,
+    "imagemPerfil": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+    "imagemIlustrativa": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop",
+    "imagemServicos": [
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop"
+    ],
+    "sobre": "Carpinteiro profissional com mais de 12 anos de experiência em marcenaria e carpintaria.",
+    "disponibilidade": [
+      {
+        "data": "2025-04-22",
+        "horario": "09:00-10:00",
+        "status": "livre"
+      },
+      {
+        "data": "2025-04-22",
+        "horario": "15:00-16:00",
+        "status": "livre"
+      }
+    ],
+    "solicitacoes": [],
+    "media_avaliacoes": 4.8
+  },
+  {
+    "_id": "fornecedor009",
+    "id_fornecedor": "fornecedor009",
+    "nome": "Ana Jardineira",
+    "cpf": "999.888.777-66",
+    "email": "ana.jardineira@email.com",
+    "telefone": "11987654321",
+    "senha": "ana123",
+    "endereco": {
+      "rua": "Rua das Flores, 123",
+      "cidade": "São Paulo",
+      "estado": "SP",
+      "cep": "01234-567",
+      "numero": "123",
+      "tipoMoradia": "Apartamento"
+    },
+    "categoria_servico": [
+      "Jardinagem",
+      "Paisagismo"
+    ],
+    "descricao": "Serviços de jardinagem, paisagismo e manutenção de jardins.",
+    "sub_descricao": "Jardinagem profissional e paisagismo",
+    "valor": 65,
+    "imagemPerfil": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+    "imagemIlustrativa": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=300&fit=crop",
+    "imagemServicos": [
+      "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=200&fit=crop",
+      "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=200&fit=crop"
+    ],
+    "sobre": "Jardineira profissional com especialização em paisagismo e manutenção de jardins.",
+    "disponibilidade": [
+      {
+        "data": "2025-04-23",
+        "horario": "08:00-09:00",
+        "status": "livre"
+      },
+      {
+        "data": "2025-04-23",
+        "horario": "14:00-15:00",
+        "status": "livre"
+      }
+    ],
+    "solicitacoes": [],
+    "media_avaliacoes": 4.7
+  },
+  {
+    "_id": "0197bcd5-44d6-7304-93a0-d3052e4da27b",
+    "nome": "Venvance",
+    "email": "devnoobsenior@gmail.com",
+    "telefone": "32937224893",
+    "senha": "$2b$10$VO5ogW1XAc7xkmwaU9djnuxWLd/a2l5vaGUjxp.LCRAQWXr2EcwSy",
+    "endereco": {
+      "rua": "Amaro Goulart ",
+      "cidade": "Muriae ",
+      "estado": "Minas gerais ",
+      "cep": "36882331"
+    },
+    "categoria_servico": [
+      "Encanamento"
+    ],
+    "descricao": "De cano eu entendo ",
+    "sub_descricao": "",
+    "valor": 100,
+    "sobre": "Daquele jeito ",
+    "imagemPerfil": "",
+    "imagemIlustrativa": "",
+    "disponibilidade": [],
+    "solicitacoes": [],
+    "media_avaliacoes": 5,
+    "id_fornecedor": "0197bcd5-44d6-7304-93a0-d3052e4da27b"
+  },
+  {
+    "_id": "0197bd03-c308-76d1-ab69-e5c71e333ebd",
+    "nome": "João com braco",
+    "email": "joao.fornecedor@email.com",
+    "telefone": "32937224893",
+    "senha": "$2b$10$tj/0S1OcokUZSVmqXBLDoOE8qXa6bFSSRMQAW2PBMlter2O7pjqdG",
+    "endereco": {
+      "rua": "Das pedras",
+      "cidade": "Muriae ",
+      "estado": "Minas gerais ",
+      "cep": "36881221"
+    },
+    "categoria_servico": [
+      "Elétricista"
+    ],
+    "descricao": "Rápido como um raio",
+    "sub_descricao": "",
+    "valor": 300,
+    "sobre": "Ligeiro ",
+    "imagemPerfil": "",
+    "imagemIlustrativa": "",
+    "disponibilidade": [],
+    "solicitacoes": [],
+    "media_avaliacoes": 5,
+    "id_fornecedor": "0197bd03-c308-76d1-ab69-e5c71e333ebd"
+  },
+  {
+    "_id": "0197bd31-b021-708e-9ff9-457837c055e5",
+    "nome": "João Fornecedor ",
+    "email": "joao.fornecedor@gmail.com",
+    "telefone": "32998305593",
+    "senha": "$2b$10$EMwa30LOZmZ/zc9MU4073.b4OuBWokvJE9vGT/LYq5odatW0xebPC",
+    "endereco": {
+      "rua": "Av. Amaro Goulart ",
+      "cidade": "Muriae ",
+      "estado": "Minas gerais ",
+      "cep": "36883221"
+    },
+    "categoria_servico": [
+      "Elétricista"
+    ],
+    "descricao": "Tudo relacionado a elétrica ",
+    "sub_descricao": "",
+    "valor": 250,
+    "sobre": "Cuidadoso ",
+    "imagemPerfil": "",
+    "imagemIlustrativa": "",
+    "disponibilidade": [],
+    "solicitacoes": [],
+    "media_avaliacoes": 5,
+    "id_fornecedor": "0197bd31-b021-708e-9ff9-457837c055e5"
   }
 ]

@@ -3,7 +3,7 @@ import fs from "fs/promises";
 import path from "path";
 import { v4 as uuid } from "uuid";
 
-const dbPath = path.join(__dirname, "../../../banco/handMan.leiloes.json");
+const dbPath = path.join(process.cwd(), "banco/handMan.leiloes.json");
 
 export class LeilaoRepository {
   async getAll(): Promise<Leilao[]> {

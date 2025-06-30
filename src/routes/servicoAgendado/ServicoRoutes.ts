@@ -9,9 +9,11 @@ const servicoController = new ServicoController();
 servicoRouter.post('/', servicoController.criarServico);
 servicoRouter.get('/:idServico', servicoController.buscarServico);
 servicoRouter.get('/:idServico/usuario', servicoController.buscarServicoComUsuario);
+servicoRouter.get('/usuario/:id', servicoController.buscarServicosPorUsuario);
 servicoRouter.put('/', servicoController.atualizarStatus);
 servicoRouter.put('/valor', servicoController.atualizarValorServico);
 servicoRouter.post('/:id_servico/imagem', servicoController.inserirImagem);
+servicoRouter.post('/verificar-conflitos', servicoController.verificarConflitosHorario);
 
 servicoRouter.post('/',servicoController.criarServico);
 servicoRouter.put('/',servicoController.atualizarStatus);

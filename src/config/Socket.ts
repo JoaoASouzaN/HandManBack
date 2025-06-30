@@ -4,7 +4,6 @@ import { Server as HttpServer } from 'http';
 import { MensagemService } from '../service/mensagem/MensagemService';
 import { IMensagem } from '../models/mensagem/MensagemModel';
 
-
 // Interface para os eventos de status
 interface StatusEvent {
     id_servico: string;
@@ -47,11 +46,21 @@ export class SocketConfig {
         // Configuração inicial do Socket.IO
         this.io = new Server(server, {
             cors: {
-                origin: '*',
-                methods: ['GET', 'POST']
+                origin: [
+                    "http://localhost:3000",
+                    "http://192.168.18.27:3003",
+                    "http://192.168.18.27:3000",
+                    "http://localhost:3003",
+                    "*"
+                ],
+                methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+                allowedHeaders: ["Content-Type", "Authorization"],
+                credentials: true
             },
+            transports: ['websocket', 'polling'],
             pingTimeout: 60000, // Timeout para ping
-            pingInterval: 25000 // Intervalo de ping
+            pingInterval: 25000, // Intervalo de ping
+            allowEIO3: true
         });
 
         this.mensagemService = new MensagemService();

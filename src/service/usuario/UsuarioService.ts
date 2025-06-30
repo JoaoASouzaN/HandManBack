@@ -199,11 +199,7 @@ export class UsuarioService extends BaseService {
 
             const servicos = await this.servicoRepository.buscarServicosPorUsuarioId(id);
 
-            if(!servicos || servicos.length === 0){
-                throw new CustomError('Nenhum serviço encontrado',404);
-            }
-
-            return servicos;
+            return servicos || [];
         } catch (error:unknown) {
             this.handleError(error);
         }

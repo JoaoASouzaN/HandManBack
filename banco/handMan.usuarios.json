@@ -5,7 +5,7 @@
     "cpf": "123.456.789-09",
     "email": "lucas.almeida@email.com",
     "telefone": "11987651234",
-    "senha": "lucas123",
+    "senha": "$2b$12$sD/d4Gzz8quWodYTHQncx.DHIf3HpoOh54rBOiQGmwuPQtxtoFMGO",
     "endereco": {
       "rua": "Rua Azul, 100",
       "cidade": "São Paulo",
@@ -16,7 +16,8 @@
       { "tipo": "cartão", "detalhes": "**** **** **** 4321" },
       { "tipo": "pix", "detalhes": "lucas@email.com" }
     ],
-    "historico_servicos": ["servico001", "servico002"]
+    "historico_servicos": ["servico001", "servico002"],
+    "role": "usuario"
   },
   {
     "_id": "usuario002",
@@ -24,7 +25,7 @@
     "cpf": "987.654.321-00",
     "email": "fernanda.costa@email.com",
     "telefone": "21998761234",
-    "senha": "fernanda123",
+    "senha": "$2b$12$uzzkl5ovjpX5k4tweScmPOINGV3pSZdj5j8W/3zO6WfEqYTT6mEE6",
     "endereco": {
       "rua": "Rua das Palmeiras, 55",
       "cidade": "Rio de Janeiro",
@@ -34,7 +35,8 @@
     "formas_pagamento": [
       { "tipo": "boleto", "detalhes": "Banco do Brasil" }
     ],
-    "historico_servicos": ["servico003"]
+    "historico_servicos": ["servico003"],
+    "role": "usuario"
   },
   {
     "_id": "usuario003",
@@ -42,7 +44,7 @@
     "cpf": "345.678.901-00",
     "email": "carlos.henrique@email.com",
     "telefone": "31988887777",
-    "senha": "carlos123",
+    "senha": "$2b$12$.IoBeh7ErAj4L33u.Eu95.er/xloNikVu4GFzJKzIppm/jDSlzYJa",
     "endereco": {
       "rua": "Av. Minas, 200",
       "cidade": "Belo Horizonte",
@@ -53,7 +55,8 @@
       { "tipo": "pix", "detalhes": "carlos.pix@bank.com" },
       { "tipo": "cartão", "detalhes": "**** **** **** 5678" }
     ],
-    "historico_servicos": []
+    "historico_servicos": [],
+    "role": "usuario"
   },
   {
     "_id": "usuario004",
@@ -61,7 +64,7 @@
     "cpf": "234.567.890-03",
     "email": "aline.ribeiro@email.com",
     "telefone": "21991234567",
-    "senha": "aline123",
+    "senha": "$2b$12$w59MRpB88ASgpZnxtLYqAu0IVvpVG9zKPrxcZiEMJ7.Kut9siorgS",
     "endereco": {
       "rua": "Rua das Acácias, 90",
       "cidade": "Niterói",
@@ -71,7 +74,8 @@
     "formas_pagamento": [
       { "tipo": "pix", "detalhes": "aline.ribeiro@email.com" }
     ],
-    "historico_servicos": ["servico004"]
+    "historico_servicos": ["servico004"],
+    "role": "usuario"
   },
   {
     "_id": "usuario005",
@@ -79,7 +83,7 @@
     "cpf": "654.321.987-01",
     "email": "marcos.souza@email.com",
     "telefone": "11994445555",
-    "senha": "marcos123",
+    "senha": "$2b$12$3wPDoq996XsvcktGSMQgf.OWR5wvLBNL5c3y5o.9JJGNF8z5ikzFK",
     "endereco": {
       "rua": "Alameda das Rosas, 321",
       "cidade": "Campinas",
@@ -90,6 +94,7 @@
       { "tipo": "cartão", "detalhes": "**** **** **** 1010" },
       { "tipo": "boleto", "detalhes": "Caixa Econômica" }
     ],
-    "historico_servicos": ["servico005", "servico006"]
+    "historico_servicos": ["servico005", "servico006"],
+    "role": "usuario"
   }
 ]

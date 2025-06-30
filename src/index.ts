@@ -29,7 +29,7 @@ const server = http.createServer(app);
 const socketConfig = new SocketConfig(server);
 
 // Inicia o servidor
-const PORT = process.env.PORT || 3003;
+const PORT = 3003; // Voltando para porta 3003
 server.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
 });

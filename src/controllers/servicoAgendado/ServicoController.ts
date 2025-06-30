@@ -7,7 +7,6 @@ import { io } from "../../index";
 import { uploadImagemBuffer } from "../../service/cloudinaryService";
 import { SocketConfig } from "../../config/Socket";
 
-
 export class ServicoController {
     private servicoService = new ServicoService();
     public criarServico = async (req: Request, res: Response) => {
@@ -200,6 +199,50 @@ export class ServicoController {
                 res.status(error.statusCode).json({ error: error.message });
             } else {
                 res.status(500).json({ error: 'Erro desconhecido ao atualizar valor do serviço' });
+            }
+        }
+    };
+
+    public verificarConflitosHorario = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const { fornecedorId, data, horario } = req.body;
+
+            if (!fornecedorId || !data || !horario) {
+                throw new CustomError("FornecedorId, data e horário são obrigatórios", 400);
+            }
+
+            const conflitos = await this.servicoService.verificarConflitosHorario(
+                fornecedorId,
+                new Date(data),
+                new Date(horario)
+            );
+
+            res.status(200).json(conflitos);
+        } catch (error: unknown) {
+            if (error instanceof CustomError) {
+                res.status(error.statusCode).json({ error: error.message });
+            } else {
+                res.status(500).json({ error: 'Erro desconhecido' });
+            }
+        }
+    };
+
+    public buscarServicosPorUsuario = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const { id } = req.params;
+
+            if (!id) {
+                throw new CustomError("ID do usuário é obrigatório", 400);
+            }
+
+            const servicos = await this.servicoService.buscarServicosPorUsuarioId(id);
+
+            res.status(200).json(servicos);
+        } catch (error: unknown) {
+            if (error instanceof CustomError) {
+                res.status(error.statusCode).json({ error: error.message });
+            } else {
+                res.status(500).json({ error: 'Erro desconhecido' });
             }
         }
     };
